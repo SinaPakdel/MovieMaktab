@@ -7,5 +7,5 @@ import retrofit2.http.Query
 
 interface MovieApiService {
     @GET("movie/popular")
-    fun getAllMovies(@Query("page") page: Int): Flow<List<MovieDto>>
+    suspend fun getAllMovies(@Query("page") page: Int): List<MovieDto>
 }

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface MovieDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(vararg movieEntity: MovieEntity)
+    suspend fun insertAll(movieEntity:List< MovieEntity>)
 
     @Query("select * from movie_table")
     fun getAllMovie(): Flow<List<MovieEntity>>
