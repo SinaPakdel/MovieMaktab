@@ -2,7 +2,7 @@ package ir.sina.moviemaktab.model.dto
 
 
 import com.google.gson.annotations.SerializedName
-
+//Data transfer Object
 data class MovieDto(
     @SerializedName("adult")
     val adult: Boolean,

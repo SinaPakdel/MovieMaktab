@@ -11,21 +11,10 @@ class MovieRepository @Inject constructor(
     private val movieApiService: MovieApiService,
     private val movieDao: MovieDao
 ) {
-
-    suspend fun getMovieList(page: Int): ArrayList<MovieItem> {
-
-        val listOfMovieItem = arrayListOf<MovieItem>()
-
+    suspend fun getMovieList(page: Int): List<MovieItem> {
         val movieListResponse = movieApiService.getAllMovies(page)
-
-        val movieEntity = movieListResponse.map { movieDto -> movieDto.asMovieEntity() }
-
-        movieDao.insertAll(movieEntity)
-
-        val movieListItem = Mapper.movieEntityToItem(movieEntity)
-
-        listOfMovieItem.addAll(movieListItem)
-
-        return listOfMovieItem
+        val movieEntityList = movieListResponse.map { movieDto -> movieDto.asMovieEntity() }
+        movieDao.insertAll(movieEntityList)
+        return Mapper.movieEntityToItem(movieEntityList)
     }
 }

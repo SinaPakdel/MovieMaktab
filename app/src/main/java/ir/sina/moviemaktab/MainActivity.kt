@@ -1,14 +1,16 @@
 package ir.sina.moviemaktab
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import ir.sina.moviemaktab.databinding.ActivityMainBinding
+import ir.sina.moviemaktab.util.NetworkConnection
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -20,6 +22,11 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        if (NetworkConnection.connected(this)) {
+            Toast.makeText(this, "Net is connected", Toast.LENGTH_SHORT).show()
+        } else Toast.makeText(this, "Net is not connected", Toast.LENGTH_SHORT).show()
+
+
 
         val navView: BottomNavigationView = binding.navView
 

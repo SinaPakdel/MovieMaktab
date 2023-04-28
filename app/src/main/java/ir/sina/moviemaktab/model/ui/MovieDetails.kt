@@ -1,6 +1,6 @@
 package ir.sina.moviemaktab.model.ui
 
-class MovieDetails(
+data class MovieDetails(
     val id: Int,
     val title: String,
     val posterPath: String,
