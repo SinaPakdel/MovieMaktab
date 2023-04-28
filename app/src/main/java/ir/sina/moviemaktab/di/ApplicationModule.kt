@@ -18,7 +18,7 @@ object ApplicationModule {
     fun provideDatabase(application: Application) =
         Room.databaseBuilder(application, MovieDatabase::class.java, "movie_database")
             /**
-             * this make us allow to access main thread but not necessary!!!!!!!
+             * this allow us to access main thread but not necessary!!!!!!!
              */
 //            .allowMainThreadQueries()
             .fallbackToDestructiveMigration()
