@@ -37,6 +37,7 @@
             android:layout_width="0dp"
             android:layout_height="12dp"
             android:indeterminate="true"
+
             android:visibility="@{homeViewModle.loadingState ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

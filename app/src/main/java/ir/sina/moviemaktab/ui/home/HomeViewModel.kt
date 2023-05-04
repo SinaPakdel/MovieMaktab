@@ -27,8 +27,8 @@ class HomeViewModel @Inject constructor(private val repository: MovieRepository)
     /**
      * This doesn't work
      */
-    fun isLoading(): Boolean {
-        return movieList.value is ResponseState.Loading
+    fun isLoading(rs: ResponseState<*>?): Boolean {
+        return rs is ResponseState.Loading
     }
 
     private fun getMovieList(page: Int) = viewModelScope.launch {
