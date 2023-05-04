@@ -14,7 +14,7 @@ import javax.net.ssl.SSLException
 sealed class ResponseState<out T> {
     object Loading : ResponseState<Nothing>()
     data class Error(val message: String) : ResponseState<Nothing>()
-    class Success<out T>(val data: T) : ResponseState<T>()
+    data class Success<out T>(val data: T) : ResponseState<T>()
 }
 
 suspend inline fun <T> safeApiCall(
