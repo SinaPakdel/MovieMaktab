@@ -51,3 +51,6 @@ suspend inline fun <T> safeApiCall(
 }.catch {
 
 }
+fun ResponseState<*>.isLoading(): Boolean {
+    return this is ResponseState.Loading
+}

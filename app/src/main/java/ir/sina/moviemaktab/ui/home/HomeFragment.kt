@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -24,18 +25,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentHomeBinding.bind(view)
-
-
-        val textView: TextView = binding.textHome
-        viewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+        _binding = DataBindingUtil.bind(view)
+        binding.homeViewModle = viewModel
+        binding.lifecycleOwner=viewLifecycleOwner
 
 
         viewModel.movieList.observe(viewLifecycleOwner) {
             when (it) {
                 is ResponseState.Error -> {
+                    /**
+                     * use INVISIBLE instead GONE for better performance
+                     */
                     Log.e(TAG, "onViewCreated: ${it.message}")
                 }
 

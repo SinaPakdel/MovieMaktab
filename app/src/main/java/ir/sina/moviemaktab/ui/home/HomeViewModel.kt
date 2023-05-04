@@ -13,22 +13,31 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val repository: MovieRepository) : ViewModel() {
-
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
-    val text: LiveData<String> = _text
-
     private val _moveList = MutableLiveData<ResponseState<List<MovieItem>>>()
     val movieList: LiveData<ResponseState<List<MovieItem>>> = _moveList
+
+
+    private val _loadingState = MutableLiveData(false)
+    val loadingState: LiveData<Boolean> = _loadingState
 
     init {
         getMovieList(1)
     }
 
+    /**
+     * This doesn't work
+     */
+    fun isLoading(): Boolean {
+        return movieList.value is ResponseState.Loading
+    }
+
     private fun getMovieList(page: Int) = viewModelScope.launch {
+        _loadingState.postValue(true)
+//        _moveList.postValue(ResponseState.Loading)
         val movieList: ResponseState<List<MovieItem>> = repository.getMovieList(page)
         _moveList.postValue(movieList)
+        _loadingState.postValue(false)
     }
 
 }
+
