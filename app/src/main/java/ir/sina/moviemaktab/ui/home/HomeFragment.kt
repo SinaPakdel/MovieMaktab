@@ -1,38 +1,53 @@
 package ir.sina.moviemaktab.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import dagger.hilt.android.AndroidEntryPoint
+import ir.sina.moviemaktab.R
 import ir.sina.moviemaktab.databinding.FragmentHomeBinding
+import ir.sina.moviemaktab.util.ResponseState
 
-class HomeFragment : Fragment() {
-
+@AndroidEntryPoint
+class HomeFragment : Fragment(R.layout.fragment_home) {
+    private val TAG = "HomeFragment"
     private var _binding: FragmentHomeBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+    private val viewModel: HomeViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentHomeBinding.bind(view)
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
         val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
+        viewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
-        return root
+
+
+        viewModel.movieList.observe(viewLifecycleOwner) {
+            when (it) {
+                is ResponseState.Error -> {
+                    Log.e(TAG, "onViewCreated: ${it.message}")
+                }
+
+                is ResponseState.Loading -> {
+                    Log.e(TAG, "onViewCreated: loading")
+                }
+
+                is ResponseState.Success -> {
+                    Log.e(TAG, "onViewCreated: $${it.data}")
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
