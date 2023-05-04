@@ -6,37 +6,46 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import dagger.hilt.android.AndroidEntryPoint
+import ir.sina.moviemaktab.R
 import ir.sina.moviemaktab.databinding.FragmentFavoriteBinding
+import ir.sina.moviemaktab.util.ResponseState
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
-class FavoriteFragment : Fragment() {
+@AndroidEntryPoint
+class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
 
-    private var _binding: FragmentFavoriteBinding? = null
+    private lateinit var binding: FragmentFavoriteBinding
+    private val viewModel: FavoriteViewModel by viewModels()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+        binding = FragmentFavoriteBinding.bind(view)
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val favoriteViewModel =
-            ViewModelProvider(this).get(FavoriteViewModel::class.java)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                viewModel.list.collect { state ->
+                    when (state) {
+                        is ResponseState.Loading -> {
+                            binding.textDashboard.text = "Loading..."
+                        }
 
-        _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+                        is ResponseState.Success -> {
+                            binding.textDashboard.text = state.data.result.toString()
+                        }
 
-        val textView: TextView = binding.textDashboard
-        favoriteViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+                        is ResponseState.Error -> {
+                            binding.textDashboard.text = state.message
+                        }
+                    }
+                }
+            }
         }
-        return root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
