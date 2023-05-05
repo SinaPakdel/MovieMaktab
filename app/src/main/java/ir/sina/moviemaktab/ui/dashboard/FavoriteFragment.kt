@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -39,12 +40,17 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
 
                         is ResponseState.Success -> {
                             binding.loadingView.onSuccess()
-                            binding.textDashboard.text = state.data.result.toString()
+                            if (state.data == null || state.data.toString().isEmpty()){
+                                binding.loadingView.onEmpty()
+                            }
                         }
 
                         is ResponseState.Error -> {
                             binding.loadingView.onFail()
-                            binding.textDashboard.text = state.message
+                            binding.loadingView.clickRequest {
+                                Toast.makeText(requireContext(), "", Toast.LENGTH_SHORT).show()
+                            }
+                            //binding.textDashboard.text = state.message
                         }
                     }
                 }

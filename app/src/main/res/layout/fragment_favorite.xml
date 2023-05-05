@@ -22,6 +22,9 @@
 
     <ir.sina.moviemaktab.ui.views.StateView
         android:id="@+id/loadingView"
+        app:fontSize="18sp"
+        app:textEmpty="متنی نداریم"
+        app:textRetry="تلاش دوباره"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

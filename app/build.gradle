@@ -65,7 +65,7 @@ dependencies {implementation 'androidx.core:core-ktx:1.8.0'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
 
-    implementation 'com.airbnb.android:lottie:5.0.3'
+    implementation 'com.airbnb.android:lottie:5.2.0'
 
 }
 kapt {
