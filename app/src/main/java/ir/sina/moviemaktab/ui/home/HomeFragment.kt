@@ -14,21 +14,19 @@ import dagger.hilt.android.AndroidEntryPoint
 import ir.sina.moviemaktab.R
 import ir.sina.moviemaktab.databinding.FragmentHomeBinding
 import ir.sina.moviemaktab.util.ResponseState
+import ir.sina.moviemaktab.util.dataBindings
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private val TAG = "HomeFragment"
-    private var _binding: FragmentHomeBinding? = null
+    private val binding by dataBindings(FragmentHomeBinding::bind)
 
-    private val binding get() = _binding!!
     private val viewModel: HomeViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = DataBindingUtil.bind(view)
         binding.homeViewModle = viewModel
-        binding.lifecycleOwner=viewLifecycleOwner
-
+        binding.lifecycleOwner = viewLifecycleOwner
 
         viewModel.movieList.observe(viewLifecycleOwner) {
             when (it) {
@@ -48,10 +46,5 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
