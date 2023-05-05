@@ -16,6 +16,7 @@ import ir.sina.moviemaktab.R
 import ir.sina.moviemaktab.databinding.FragmentFavoriteBinding
 import ir.sina.moviemaktab.util.ResponseState
 import ir.sina.moviemaktab.util.viewBinding
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -32,14 +33,17 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
                 viewModel.list.collect { state ->
                     when (state) {
                         is ResponseState.Loading -> {
-                            binding.textDashboard.text = "Loading..."
+                            binding.loadingView.onLoading()
+                            delay(10000)
                         }
 
                         is ResponseState.Success -> {
+                            binding.loadingView.onSuccess()
                             binding.textDashboard.text = state.data.result.toString()
                         }
 
                         is ResponseState.Error -> {
+                            binding.loadingView.onFail()
                             binding.textDashboard.text = state.message
                         }
                     }
